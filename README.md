@@ -188,6 +188,12 @@ Then checkout each service at:
     - cluster: istio-mesh
 ```
 
+## Releases
+
+https://github.com/nmnellis/vistio/releases
+
+* v0.1.0 - Initial Release
+
 ## Contributing
 
 Please feel free to create an issue or pull request.
