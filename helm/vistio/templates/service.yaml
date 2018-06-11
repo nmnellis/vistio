@@ -1,0 +1,39 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: vistio-api
+  labels:
+    heritage: {{ .Release.Service }}
+    chart: "{{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}"
+    app: vistio-api
+    release: {{ .Release.Name }}
+spec:
+  type: ClusterIP
+  selector:
+    app: vistio-api
+    release: {{ .Release.Name }}
+  ports:
+    - name: http
+      port: {{ .Values.api.service.externalPort }}
+      targetPort: {{ .Values.api.service.internalPort }}
+      protocol: TCP
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: vistio-web
+  labels:
+    heritage: {{ .Release.Service }}
+    chart: "{{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}"
+    app: vitsio-web
+    release: {{ .Release.Name }}
+spec:
+  type: ClusterIP
+  selector:
+    app: vistio-web
+    release: {{ .Release.Name }}
+  ports:
+    - name: http
+      port: {{ .Values.web.service.externalPort }}
+      targetPort: {{ .Values.web.service.internalPort }}
+      protocol: TCP

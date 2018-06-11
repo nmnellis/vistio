@@ -1,0 +1,49 @@
+######################################
+## Vistio-api config
+##  Global level - displays total requests per second of the mesh
+##  Cluster level - displays traffic within the istio mesh
+##
+##  * This configuration works well with istio bookinfo demo
+######################################
+vistioConfig:
+  graphName: Vistio
+  globalLevel:
+    maxVolume: 100
+    clusterConnections:
+      # Total requests per second of the mesh
+      - query: sum(rate(istio_request_count[1m])) by (response_code)
+        prometheusURL: {{ .Values.api.prometheusUrl }}
+        source:
+          replacement: "Total Mesh Requests"
+        target:
+          replacement: istio-mesh
+        status:
+          label: response_code
+          # color coding of requests
+          warningRegex: ^4..$
+          dangerRegex: ^5..$
+  clusterLevel:
+    # Cluster name must match 'target' name in global
+    - cluster: istio-mesh
+      maxVolume: 100
+      serviceConnections:
+        - query: sum(rate(istio_request_count[1m])) by (source_service,destination_service,response_code)
+          prometheusURL: {{ .Values.api.prometheusUrl }}
+          source:
+            label: source_service
+          target:
+            label: destination_service
+          status:
+            label: response_code
+            # color coding of requests
+            warningRegex: ^4..$
+            dangerRegex: ^5..$
+          notices:
+            - name: HighErrorRate
+              title: "[{{ .value }}] High Error Rate"
+              statusType: danger
+              severityThreshold:
+                # Warning alert at 1%
+                warning: .01
+                # Error alert at 5%
+                error: .05

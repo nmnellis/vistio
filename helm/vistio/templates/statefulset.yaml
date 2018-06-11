@@ -1,0 +1,80 @@
+apiVersion: apps/v1beta1
+kind: StatefulSet
+metadata:
+  name: vistio-api
+  labels:
+    heritage: {{ .Release.Service }}
+    chart: "{{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}"
+    app: vistio-api
+    release: {{ .Release.Name }}
+spec:
+  replicas: {{ .Values.api.replicaCount }}
+  serviceName: vistio
+  template:
+    metadata:
+      labels:
+        app: vistio-api
+        release: {{ .Release.Name }}
+    spec:
+      containers:
+        - name: vistio-api
+          image: {{ .Values.api.image.repository }}:{{ .Values.api.image.tag }}
+          imagePullPolicy: {{ .Values.api.image.pullPolicy }}
+          args:
+            - --config.file=/etc/vistio/vistio.yaml
+            - --log.level={{ .Values.api.log.level }}
+            - --storage.path=/var/vistio/data
+            - --storage.retention={{ .Values.api.storage.retention }}
+            - --cache.size={{ .Values.api.cache.size }}
+            - --retrieval.scrape-interval={{ .Values.api.retrieval.scrapeInterval }}
+            - --retrieval.scrape-timeout={{ .Values.api.retrieval.scrapeTimeout }}
+            - --api.port={{ .Values.api.service.internalPort }}
+          ports:
+            - containerPort: {{ .Values.api.service.internalPort }}
+          livenessProbe:
+            httpGet:
+              path: /
+              port: {{ .Values.api.service.internalPort }}
+            initialDelaySeconds: 30
+            timeoutSeconds: 30
+          readinessProbe:
+            httpGet:
+              path: /
+              port: {{ .Values.api.service.internalPort }}
+            initialDelaySeconds: 30
+            timeoutSeconds: 30
+          resources:
+{{ toYaml .Values.api.resources | indent 12 }}
+          volumeMounts:
+            - name: config
+              mountPath: /etc/vistio
+            - name: vistio-db
+              mountPath: /var/vistio/data
+              subPath: vistio-db
+        - name: reloader
+          image: {{ .Values.reloader.image.repository }}:{{ .Values.reloader.image.tag }}
+          imagePullPolicy: {{ .Values.reloader.image.pullPolicy }}
+          args:
+            - --config.promviz-reload-url=http://localhost:{{ .Values.api.service.internalPort }}/reload
+            - --config.promviz-config-dir=/etc/vistio
+            - --config.log-level=info
+          resources:
+{{ toYaml .Values.reloader.resources | indent 12 }}
+          volumeMounts:
+            - name: config
+              mountPath: /etc/vistio
+      volumes:
+        - name: config
+          configMap:
+            name: vistio-api-config
+  volumeClaimTemplates:
+  - metadata:
+      annotations:
+        volume.beta.kubernetes.io/storage-class: {{ .Values.api.storage.class }}
+      name: vistio-db
+    spec:
+      accessModes:
+      - ReadWriteOnce
+      resources:
+        requests:
+          storage: {{ .Values.api.storage.size }}

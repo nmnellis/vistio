@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: vistio-api-config
+  labels:
+    heritage: {{ .Release.Service }}
+    chart: "{{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}"
+    app: {{ template "name" . }}
+    release: {{ .Release.Name }}
+data:
+  vistio.yaml: |-
+{{ toYaml .Values.vistioConfig | indent 4 }}

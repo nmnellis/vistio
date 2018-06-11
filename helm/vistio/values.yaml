@@ -1,0 +1,77 @@
+######################################
+## Vistio-api
+######################################
+api:
+  prometheusUrl: http://prometheus-server.monitoring
+  image:
+    repository: nmnellis/vistio-api
+    tag: latest
+    pullPolicy: IfNotPresent
+  log:
+    level: info
+  cache:
+    size: 100
+  retrieval:
+    scrapeInterval: 10s
+    scrapeTimeout: 8s
+  resources: {}
+    # limits:
+    #   cpu: 200m
+    #   memory: 256Mi
+    # requests:
+    #   cpu: 100m
+    #   memory: 128Mi
+
+  replicaCount: 1
+
+  service:
+    externalPort: 9091
+    internalPort: 9091
+  storage:
+    class: standard
+    size: 5Gi
+    # how long to hold onto vistio data
+    retention: 24h
+## Configurations for reloader container in vistio-api
+reloader:
+  image:
+    repository: nghialv2607/k8s-config-reloader
+    tag: v0.1.0
+    pullPolicy: IfNotPresent
+  resources:
+    limits:
+      cpu: 50m
+      memory: 64Mi
+    requests:
+      cpu: 20m
+      memory: 32Mi
+######################################
+## Vistio-web
+######################################
+web:
+  service:
+    externalPort: 80
+    internalPort: 8080
+
+  replicaCount: 1
+
+  env:
+    # Vistio-api url (use localhost for kubectl port-forward)
+    updateURL: "http://localhost:9091/graph"
+    interval: "1000"
+    maxReplayOffset: "43200"
+
+  image:
+    repository: nmnellis/vistio-web
+    tag: latest
+    pullPolicy: Always
+
+  resources: {}
+    # limits:
+    #   cpu: 200m
+    #   memory: 256Mi
+    # requests:
+    #   cpu: 100m
+    #   memory: 128Mi
+
+

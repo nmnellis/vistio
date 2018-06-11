@@ -1,0 +1,32 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: vistio-web
+  labels:
+    heritage: {{ .Release.Service }}
+    chart: "{{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}"
+    app: vistio-web
+    release: {{ .Release.Name }}
+spec:
+  replicas: {{ .Values.web.replicaCount }}
+  template:
+    metadata:
+      labels:
+        app: vistio-web
+        release: {{ .Release.Name }}
+    spec:
+      containers:
+        - name: {{ .Chart.Name }}
+          image: "{{ .Values.web.image.repository }}:{{ .Values.web.image.tag }}"
+          imagePullPolicy: {{ .Values.web.image.pullPolicy }}
+          ports:
+            - containerPort: {{ .Values.web.service.internalPort }}
+          env:
+            - name: UPDATE_URL
+              value: {{ .Values.web.env.updateURL }}
+            - name: INTERVAL
+              value: {{ .Values.web.env.interval | quote }}
+            - name: MAX_REPLAY_OFFSET
+              value: {{ .Values.web.env.maxReplayOffset | quote }}
+          resources:
+{{ toYaml .Values.web.resources | indent 12 }}
