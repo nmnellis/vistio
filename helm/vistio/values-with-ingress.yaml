@@ -9,7 +9,7 @@ vistioConfig:
     maxVolume: 2000000
     clusterConnections:
       # Total requests per second coming into the ingress controller from internet
-      - query: sun(rate(istio_request_count{destination_service="istio-ingressgateway.istio-system.svc.cluster.local"}[1m])) by (response_code)
+      - query: sum(rate(istio_request_count{destination_service="istio-ingressgateway.istio-system.svc.cluster.local"}[1m])) by (response_code)
         prometheusURL: http://prometheus.istio-system
         source:
           replacement: INTERNET
