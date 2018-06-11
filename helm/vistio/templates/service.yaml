@@ -25,7 +25,7 @@ metadata:
   labels:
     heritage: {{ .Release.Service }}
     chart: "{{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}"
-    app: vitsio-web
+    app: vistio-web
     release: {{ .Release.Name }}
 spec:
   type: ClusterIP

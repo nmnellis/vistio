@@ -2,10 +2,9 @@
 ## Vistio-api
 ######################################
 api:
-  prometheusUrl: http://prometheus-server.monitoring
   image:
     repository: nmnellis/vistio-api
-    tag: latest
+    tag: v0.1.0
     pullPolicy: IfNotPresent
   log:
     level: info
@@ -50,7 +49,7 @@ reloader:
 ######################################
 web:
   service:
-    externalPort: 80
+    externalPort: 8080
     internalPort: 8080
 
   replicaCount: 1
@@ -63,7 +62,7 @@ web:
 
   image:
     repository: nmnellis/vistio-web
-    tag: latest
+    tag: v0.1.0
     pullPolicy: Always
 
   resources: {}
