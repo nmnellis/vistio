@@ -29,8 +29,14 @@ It has 2 components:
 
 If you are using [Helm](https://helm.sh), the simplest way to install is using the charts in `helm` directory with
 
+* Deployment when using istio-ingressgateway as kubernetes ingress controller
 ```
-helm install --name vistio ./helm/vistio
+helm install helm/vistio -f helm/vistio/values-with-ingress.yaml --name vistio --namespace default
+```
+
+* Deployment when only vizualizing internal Istio mesh without istio-ingressgateway
+```
+helm install helm/vistio -f helm/vistio/values-mesh-only.yaml --name vistio --namespace default
 ```
 
 #### Docker images
