@@ -17,7 +17,7 @@ It has 2 components:
 - Provides a sidecar application for k8s that watches config changes and reload Vistio server in runtime
 - Fits with [Istio](https://istio.io)'s metrics
 
-![](https://github.com/nmnellis/vistio/blob/master/documentation/sample_filter.png)
+![](https://github.com/nmnellis/vistio/blob/master/documentation/sample.png)
 
 ## Architecture
 
@@ -60,18 +60,116 @@ Then checkout each service at:
 
 See [configuration.md](https://github.com/nmnellis/vistio/blob/master/documentation/configuration.md) in documentation directory.
 
-## Deploy with Istio Bookinfo 
+## Deploy Vistio with Istio Ingress Gateway (kubectl)
+
+1. Deploy Istio
+```sh
+kubectl apply -f vistio-with-ingress.yaml -n default
+```
+
+2. Expose vistio-web
+```sh
+kubectl -n default port-forward $(kubectl -n default get pod -l app=vistio-web -o jsonpath='{.items[0].metadata.name}') 8080:8080 &
+```
+
+3. Open Vistio `localhost:8080`
+
+4. Expose vistio-api
+```sh
+kubectl -n default port-forward $(kubectl -n default get pod -l app=vistio-api -o jsonpath='{.items[0].metadata.name}') 9091:9091 &
+```
+
+5. Test endpoint `localhost:9091/graph`
+
+6. Add traffic to the mesh by following bookinfo demo here https://istio.io/docs/guides/bookinfo/ to get the `GATEWAY_URL` and calling
+```sh
+curl -o /dev/null -s -w "%{http_code}\n" http://${GATEWAY_URL}/productpage
+```
+
+## Deploy Vistio with Istio Ingress Gateway (helm)
 
 1. Deploy Vistio
 
-2. Get Vistio host and port.
 ```sh
-export VISTIO_HOST=$(kubectl get po -l app=vistio-web -n default -o 'jsonpath={.items[0].status.hostIP}')
-export VISTIO_PORT=$(kubectl get service vistio-web -o jsonpath='{.spec.ports[?(@.name=="http")].nodePort}')
-export VISTIO_URL=$VISTIO_HOST:$VISTIO_PORT
+helm install helm/vistio -f helm/vistio/values-mesh-only.yaml --name vistio --namespace default
 ```
-3. 
 
+2. Expose vistio-web
+```sh
+kubectl -n default port-forward $(kubectl -n default get pod -l app=vistio-web -o jsonpath='{.items[0].metadata.name}') 8080:8080 &
+```
+
+3. Open Vistio <localhost:8080>
+
+4. Expose vistio-api
+```sh
+kubectl -n default port-forward $(kubectl -n default get pod -l app=vistio-api -o jsonpath='{.items[0].metadata.name}') 9091:9091 &
+```
+
+5. Test endpoint <localhost:9091/graph>
+
+6. Add traffic to the mesh by following bookinfo demo here [Istio Bookinfo Demo](https://istio.io/docs/guides/bookinfo/) to get the `GATEWAY_URL` and calling
+```sh
+curl -o /dev/null -s -w "%{http_code}\n" http://${GATEWAY_URL}/productpage
+```
+
+
+## Deploy Vistio Without Istio Ingress (kubectl)
+
+1. Deploy Istio
+```sh
+kubectl apply -f vistio-mesh-only.yaml -n default
+```
+
+2. Expose vistio-web
+```sh
+kubectl -n default port-forward $(kubectl -n default get pod -l app=vistio-web -o jsonpath='{.items[0].metadata.name}') 8080:8080 &
+```
+
+3. Open Vistio `localhost:8080`
+
+4. Expose vistio-api
+```sh
+kubectl -n default port-forward $(kubectl -n default get pod -l app=vistio-api -o jsonpath='{.items[0].metadata.name}') 9091:9091 &
+```
+
+5. Test endpoint `localhost:9091/graph`
+
+6. Add traffic to the mesh by following bookinfo demo here https://istio.io/docs/guides/bookinfo/ to get the `GATEWAY_URL` and calling
+```sh
+curl -o /dev/null -s -w "%{http_code}\n" http://${GATEWAY_URL}/productpage
+```
+
+
+## Deploy Vistio Without Istio Ingress (Helm)
+
+
+* 
+
+1. Deploy Vistio
+
+```sh
+helm install helm/vistio -f helm/vistio/values-mesh-only.yaml --name vistio --namespace default
+```
+
+2. Expose vistio-web
+```sh
+kubectl -n default port-forward $(kubectl -n default get pod -l app=vistio-web -o jsonpath='{.items[0].metadata.name}') 8080:8080 &
+```
+
+3. Open Vistio <localhost:8080>
+
+4. Expose vistio-api
+```sh
+kubectl -n default port-forward $(kubectl -n default get pod -l app=vistio-api -o jsonpath='{.items[0].metadata.name}') 9091:9091 &
+```
+
+5. Test endpoint <localhost:9091/graph>
+
+6. Add traffic to the mesh by following bookinfo demo here [Istio Bookinfo Demo](https://istio.io/docs/guides/bookinfo/) to get the `GATEWAY_URL` and calling
+```sh
+curl -o /dev/null -s -w "%{http_code}\n" http://${GATEWAY_URL}/productpage
+```
 ## Contributing
 
 Please feel free to create an issue or pull request.

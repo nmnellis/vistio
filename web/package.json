@@ -1,7 +1,7 @@
 {
-  "name": "promviz-front",
+  "name": "vistio web",
   "version": "0.1.0",
-  "description": "promviz front",
+  "description": "vistio web",
   "author": "Yusuke Otsuka <mjhd.devlion@gmail.com>",
   "scripts": {
     "clean": "rimraf dist && mkdirp dist",
@@ -73,7 +73,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git@github.com:mjhd-devlion/promviz-front.git"
+    "url": "git@github.com:nmnellis/vistio.git"
   },
   "pre-commit": [
     "lint",
