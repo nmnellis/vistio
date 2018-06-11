@@ -4,7 +4,7 @@
 api:
   image:
     repository: nmnellis/vistio-api
-    tag: latest
+    tag: v0.1.0
     pullPolicy: IfNotPresent
   log:
     level: info
@@ -62,7 +62,7 @@ web:
 
   image:
     repository: nmnellis/vistio-web
-    tag: latest
+    tag: v0.1.0
     pullPolicy: Always
 
   resources: {}

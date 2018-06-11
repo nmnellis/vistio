@@ -14,14 +14,14 @@ services:
       - ./prometheus.yml:/etc/prometheus/prometheus.yml
   vistio-api:
     container_name: vistio-api
-    image: nmnellis/vistio-api:latest
+    image: nmnellis/vistio-api:v0.1.0
     ports:
       - 9091:9091
     volumes:
       - ./vistio.yaml:/etc/vistio/vistio.yaml
   vistio-web:
     container_name: vistio-web
-    image: nmnellis/vistio-web:latest
+    image: nmnellis/vistio-web:v0.1.0
     ports:
       - 8080:8080
     environment:

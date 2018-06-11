@@ -22,7 +22,7 @@ data:
             warning: 0.01
           statusType: danger
           title: '[{{ .value }}] High Error Rate'
-        prometheusURL: http://prometheus-server.monitoring
+        prometheusURL: http://prometheus.istio-system
         query: sum(rate(istio_request_count[1m])) by (source_service,destination_service,response_code)
         source:
           label: source_service
@@ -34,7 +34,7 @@ data:
           label: destination_service
     globalLevel:
       clusterConnections:
-      - prometheusURL: http://prometheus-server.monitoring
+      - prometheusURL: http://prometheus.istio-system
         query: sun(rate(istio_request_count{destination_service="istio-ingressgateway.istio-system.svc.cluster.local"}[1m]))
           by (response_code)
         source:
@@ -77,7 +77,7 @@ metadata:
   labels:
     heritage: Tiller
     chart: "vistio-0.1.0"
-    app: vitsio-web
+    app: vistio-web
     release: vistio
 spec:
   type: ClusterIP
@@ -111,7 +111,7 @@ spec:
     spec:
       containers:
         - name: vistio
-          image: "nmnellis/vistio-web:latest"
+          image: "nmnellis/vistio-web:v0.1.0"
           imagePullPolicy: Always
           ports:
             - containerPort: 8080
@@ -148,7 +148,7 @@ spec:
     spec:
       containers:
         - name: vistio-api
-          image: nmnellis/vistio-api:latest
+          image: nmnellis/vistio-api:v0.1.0
           imagePullPolicy: IfNotPresent
           args:
             - --config.file=/etc/vistio/vistio.yaml
