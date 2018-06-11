@@ -56,22 +56,8 @@ workflows:
       - build-api:
           filters:
             tags:
-              ignore: /^.*/
+              only: /.*/
       - build-web:
           filters:
             tags:
-              ignore: /^.*/
-  build_project_tagged:
-    jobs:
-      - build-api:
-          filters:
-            branches:
-              ignore: /.*/
-            tags:
-              only: /^v.*/
-      - build-web:
-          filters:
-            branches:
-              ignore: /.*/
-            tags:
-              only: /^v.*/
+              only: /.*/
