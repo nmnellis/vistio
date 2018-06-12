@@ -1,5 +1,22 @@
 # Vistio [![CircleCI Build Status](https://circleci.com/gh/nmnellis/vistio.svg?style=shield)](https://circleci.com/gh/nmnellis/vistio) [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat)](http://makeapullrequest.com) [![MIT Licensed](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/nmnellis/vistio/blob/master/LICENSE)
 
+  * [Features](#features)
+  * [Architecture](#architecture)
+  * [Docker images](#docker-images)
+  * [Deploy Vistio](#deploy-vistio)
+    + [Deploy Vistio with Istio Ingress Gateway (kubectl)](#deploy-vistio-with-istio-ingress-gateway-kubectl)
+    + [Deploy Vistio with Istio Ingress Gateway (helm)](#deploy-vistio-with-istio-ingress-gateway-helm)
+    + [Deploy Vistio Without Istio Ingress (kubectl)](#deploy-vistio-without-istio-ingress-kubectl)
+    + [Deploy Vistio Without Istio Ingress (Helm)](#deploy-vistio-without-istio-ingress-helm)
+  * [Configuration](#configuration)
+  * [docker-compose Example](#docker-compose-example)
+  * [Troubleshooting](#troubleshooting)
+  * [Releases](#releases)
+  * [Contributing](#contributing)
+  * [LICENSE](#license)
+
+<small><i><a href='http://ecotrust-canada.github.io/markdown-toc/'>Table of contents generated with markdown-toc</a></i></small>
+
 * Forked from - https://github.com/nghialv/promviz and https://github.com/mjhd-devlion/promviz-front 
 
 Vistio is an application that helps you visualize the traffic of your cluster from Prometheus data.
@@ -10,7 +27,7 @@ It has 2 components:
 
 - Vistio-Web: Forked from [Promviz-front](https://github.com/mjhd-devlion/promviz-front): based on Netflix's [vizceral](https://github.com/Netflix/vizceral) to render traffic graph.
 
-#### Features:
+## Features:
 - Generates and renders traffic graph in realtime
 - Able to replay from any time in the past
 - Able to generate notices on node and connection from prom query
@@ -23,15 +40,16 @@ It has 2 components:
 
 ![](https://github.com/nmnellis/vistio/blob/master/documentation/architecture.png)
 
-#### Docker images
+## Docker images
 
 Docker images of both `vistio-api` and `vistio-web` are available on Docker Hub.
 
 - [nmnellis/vistio-api](https://hub.docker.com/r/nmnellis/vistio-api)
 - [nmnellis/vistio-web](https://hub.docker.com/r/nmnellis/vistio-web)
 
+## Deploy Vistio
 
-## Deploy Vistio with Istio Ingress Gateway (kubectl)
+### Deploy Vistio with Istio Ingress Gateway (kubectl)
 
 * prometheusUrl - the default prometheus url is assumed to be <http://prometheus.istio-system> based on the Istio deployment. If your Prometheus server is in a different namespace or has a different service name, you will need to edit the yaml files.
 
@@ -59,7 +77,7 @@ kubectl -n default port-forward $(kubectl -n default get pod -l app=vistio-api -
 curl -o /dev/null -s -w "%{http_code}\n" http://${GATEWAY_URL}/productpage
 ```
 
-## Deploy Vistio with Istio Ingress Gateway (helm)
+### Deploy Vistio with Istio Ingress Gateway (helm)
 
 * prometheusUrl - the default prometheus url is assumed to be <http://prometheus.istio-system> based on the Istio deployment. If your Prometheus server is in a different namespace or has a different service name, you will need to edit the yaml files.
 
@@ -89,7 +107,7 @@ curl -o /dev/null -s -w "%{http_code}\n" http://${GATEWAY_URL}/productpage
 ```
 
 
-## Deploy Vistio Without Istio Ingress (kubectl)
+### Deploy Vistio Without Istio Ingress (kubectl)
 
 * prometheusUrl - the default prometheus url is assumed to be <http://prometheus.istio-system> based on the Istio deployment. If your Prometheus server is in a different namespace or has a different service name, you will need to edit the yaml files.
 
@@ -117,7 +135,7 @@ kubectl -n default port-forward $(kubectl -n default get pod -l app=vistio-api -
 curl -o /dev/null -s -w "%{http_code}\n" http://${GATEWAY_URL}/productpage
 ```
 
-## Deploy Vistio Without Istio Ingress (Helm)
+### Deploy Vistio Without Istio Ingress (Helm)
 
 * prometheusUrl - the default prometheus url is assumed to be <http://prometheus.istio-system> based on the Istio deployment. If your Prometheus server is in a different namespace or has a different service name, you will need to edit the yaml files.
 
