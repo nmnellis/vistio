@@ -51,7 +51,7 @@ Docker images of both `vistio-api` and `vistio-web` are available on Docker Hub.
 
 ### Deploy Vistio with Istio Ingress Gateway (kubectl)
 
-* prometheusUrl - the default prometheus url is assumed to be <http://prometheus.istio-system> based on the Istio deployment. If your Prometheus server is in a different namespace or has a different service name, you will need to edit the yaml files.
+* prometheusUrl - the default prometheus url is assumed to be <http://prometheus.istio-system:9090> based on the Istio deployment. If your Prometheus server is in a different namespace or has a different service name, you will need to edit the yaml files.
 
 1. Deploy Istio
 ```sh
@@ -79,7 +79,7 @@ curl -o /dev/null -s -w "%{http_code}\n" http://${GATEWAY_URL}/productpage
 
 ### Deploy Vistio with Istio Ingress Gateway (helm)
 
-* prometheusUrl - the default prometheus url is assumed to be <http://prometheus.istio-system> based on the Istio deployment. If your Prometheus server is in a different namespace or has a different service name, you will need to edit the yaml files.
+* prometheusUrl - the default prometheus url is assumed to be <http://prometheus.istio-system:9090> based on the Istio deployment. If your Prometheus server is in a different namespace or has a different service name, you will need to edit the yaml files.
 
 1. Deploy Vistio
 
@@ -109,7 +109,7 @@ curl -o /dev/null -s -w "%{http_code}\n" http://${GATEWAY_URL}/productpage
 
 ### Deploy Vistio Without Istio Ingress (kubectl)
 
-* prometheusUrl - the default prometheus url is assumed to be <http://prometheus.istio-system> based on the Istio deployment. If your Prometheus server is in a different namespace or has a different service name, you will need to edit the yaml files.
+* prometheusUrl - the default prometheus url is assumed to be <http://prometheus.istio-system:9090> based on the Istio deployment. If your Prometheus server is in a different namespace or has a different service name, you will need to edit the yaml files.
 
 1. Deploy Istio
 ```sh
@@ -137,7 +137,7 @@ curl -o /dev/null -s -w "%{http_code}\n" http://${GATEWAY_URL}/productpage
 
 ### Deploy Vistio Without Istio Ingress (Helm)
 
-* prometheusUrl - the default prometheus url is assumed to be <http://prometheus.istio-system> based on the Istio deployment. If your Prometheus server is in a different namespace or has a different service name, you will need to edit the yaml files.
+* prometheusUrl - the default prometheus url is assumed to be <http://prometheus.istio-system:9090> based on the Istio deployment. If your Prometheus server is in a different namespace or has a different service name, you will need to edit the yaml files.
 
 1. Deploy Vistio
 
