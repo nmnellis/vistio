@@ -22,7 +22,7 @@ data:
             warning: 0.01
           statusType: danger
           title: '[{{ .value }}] High Error Rate'
-        prometheusURL: http://prometheus.istio-system
+        prometheusURL: http://prometheus.istio-system:9090
         query: sum(rate(istio_request_count[1m])) by (source_service,destination_service,response_code)
         source:
           label: source_service
@@ -34,7 +34,7 @@ data:
           label: destination_service
     globalLevel:
       clusterConnections:
-      - prometheusURL: http://prometheus.istio-system
+      - prometheusURL: http://prometheus.istio-system:9090
         query: sum(rate(istio_request_count{destination_service="istio-ingressgateway.istio-system.svc.cluster.local"}[1m]))
           by (response_code)
         source:
