@@ -27,12 +27,16 @@ It has 2 components:
 
 - Vistio-Web: Forked from [Promviz-front](https://github.com/mjhd-devlion/promviz-front): based on Netflix's [vizceral](https://github.com/Netflix/vizceral) to render traffic graph.
 
+## Updated for Istio 1.0
+The helm charts have been updated to work with Istio 1.0
+
 ## Features:
 - Generates and renders traffic graph in realtime
 - Able to replay from any time in the past
 - Able to generate notices on node and connection from prom query
 - Provides a sidecar application for k8s that watches config changes and reload Vistio server in runtime
 - Fits with [Istio](https://istio.io)'s metrics
+
 
 ![](https://github.com/nmnellis/vistio/blob/master/documentation/sample.png)
 
@@ -138,6 +142,12 @@ curl -o /dev/null -s -w "%{http_code}\n" http://${GATEWAY_URL}/productpage
 ### Deploy Vistio Without Istio Ingress (Helm)
 
 * prometheusUrl - the default prometheus url is assumed to be <http://prometheus.istio-system:9090> based on the Istio deployment. If your Prometheus server is in a different namespace or has a different service name, you will need to edit the yaml files.
+
+1. Deploy Vistio
+
+```sh
+helm install helm/vistio -f helm/vistio/values-mesh-only.yaml --name vistio --namespace default
+```
 
 1. Deploy Vistio
 
