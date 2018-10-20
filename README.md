@@ -149,12 +149,6 @@ curl -o /dev/null -s -w "%{http_code}\n" http://${GATEWAY_URL}/productpage
 helm install helm/vistio -f helm/vistio/values-mesh-only.yaml --name vistio --namespace default
 ```
 
-1. Deploy Vistio
-
-```sh
-helm install helm/vistio -f helm/vistio/values-mesh-only.yaml --name vistio --namespace default
-```
-
 2. Expose vistio-web
 ```sh
 kubectl -n default port-forward $(kubectl -n default get pod -l app=vistio-web -o jsonpath='{.items[0].metadata.name}') 8080:8080 &
