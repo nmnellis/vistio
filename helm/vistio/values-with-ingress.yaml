@@ -9,7 +9,7 @@ vistioConfig:
     maxVolume: 2000000
     clusterConnections:
       # Total requests per second coming into the ingress controller from internet
-      - query: sum(rate(istio_request_count{destination_service="istio-ingressgateway.istio-system.svc.cluster.local"}[1m])) by (response_code)
+      - query: sum(rate(istio_requests_total{reporter="source", source_workload="istio-ingressgateway"}[1m])) by (response_code)
         prometheusURL: http://prometheus.istio-system:9090
         source:
           replacement: INTERNET
@@ -25,10 +25,10 @@ vistioConfig:
     - cluster: istio-mesh
       maxVolume: 3000
       serviceConnections:
-        - query: sum(rate(istio_request_count[1m])) by (source_service,destination_service,response_code)
+        - query: sum(rate(istio_requests_total[1m])) by (source_app,destination_service,response_code)
           prometheusURL: http://prometheus.istio-system:9090
           source:
-            label: source_service
+            label: source_app
           target:
             label: destination_service
           status:

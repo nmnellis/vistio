@@ -11,7 +11,7 @@ vistioConfig:
     maxVolume: 100
     clusterConnections:
       # Total requests per second of the mesh
-      - query: sum(rate(istio_request_count[1m])) by (response_code)
+      - query: sum(rate(istio_requests_total[1m])) by (response_code)
         prometheusURL: http://prometheus.istio-system:9090
         source:
           replacement: "Total Mesh Requests"
@@ -27,10 +27,10 @@ vistioConfig:
     - cluster: istio-mesh
       maxVolume: 100
       serviceConnections:
-        - query: sum(rate(istio_request_count[1m])) by (source_service,destination_service,response_code)
+        - query: sum(rate(istio_requests_total[1m])) by (source_app,destination_service,response_code)
           prometheusURL: http://prometheus.istio-system:9090
           source:
-            label: source_service
+            label: source_app
           target:
             label: destination_service
           status:
